@@ -18,10 +18,6 @@ public class CalculadoraController {
 	}
 
 	public BigDecimal dividir(BigDecimal valor1, BigDecimal valor2) {
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println("teste");
 		return valor1.divide(valor2, 2, RoundingMode.HALF_EVEN);
 	}
 
