@@ -1,5 +1,9 @@
 package br.com.andersonajx;
 
+import br.com.andersonajx.math.AdicaoCommand;
+import br.com.andersonajx.math.DivisaoCommand;
+import br.com.andersonajx.math.MultiplicacaoCommand;
+import br.com.andersonajx.math.SubtracaoCommand;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 public class CalculadoraView extends Application {
 
@@ -41,25 +46,11 @@ public class CalculadoraView extends Application {
 
 		final TextField primeiroValor = new TextField();
 		primeiroValor.setPromptText("Informe um número");
-		primeiroValor.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent keyEvent) {
-				if (!keyEvent.getCharacter().matches("\\d")) {
-					keyEvent.consume();
-				}
-			}
-		});
+		primeiroValor.addEventFilter(KeyEvent.KEY_TYPED, new SomenteNumeroKeyEvent());
 
 		final TextField segundoValor = new TextField();
 		segundoValor.setPromptText("Informe um número");
-		segundoValor.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent keyEvent) {
-				if (!keyEvent.getCharacter().matches("\\d")) {
-					keyEvent.consume();
-				}
-			}
-		});
+		segundoValor.addEventFilter(KeyEvent.KEY_TYPED, new SomenteNumeroKeyEvent());
 
 		top.getChildren().addAll(primeiroValor, segundoValor);
 
@@ -68,7 +59,8 @@ public class CalculadoraView extends Application {
 		somar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				resultado.setText(controller.somar(new BigDecimal(primeiroValor.getText()), new BigDecimal(segundoValor.getText())).toPlainString());
+				AdicaoCommand command = new AdicaoCommand(new BigInteger(primeiroValor.getText()), new BigInteger(segundoValor.getText()));
+				resultado.setText(controller.calcular(command).toString());
 			}
 		});
 
@@ -77,7 +69,8 @@ public class CalculadoraView extends Application {
 		subtrair.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				resultado.setText(controller.subtrair(new BigDecimal(primeiroValor.getText()), new BigDecimal(segundoValor.getText())).toPlainString());
+				SubtracaoCommand command = new SubtracaoCommand(new BigInteger(primeiroValor.getText()), new BigInteger(segundoValor.getText()));
+				resultado.setText(controller.calcular(command).toString());
 			}
 		});
 
@@ -86,7 +79,8 @@ public class CalculadoraView extends Application {
 		multiplicar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				resultado.setText(controller.multiplicar(new BigDecimal(primeiroValor.getText()), new BigDecimal(segundoValor.getText())).toPlainString());
+				MultiplicacaoCommand command = new MultiplicacaoCommand(new BigInteger(primeiroValor.getText()), new BigInteger(segundoValor.getText()));
+				resultado.setText(controller.calcular(command).toString());
 			}
 		});
 
@@ -95,7 +89,8 @@ public class CalculadoraView extends Application {
 		dividir.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				resultado.setText(controller.dividir(new BigDecimal(primeiroValor.getText()), new BigDecimal(segundoValor.getText())).toPlainString());
+				DivisaoCommand command = new DivisaoCommand(new BigDecimal(primeiroValor.getText()), new BigDecimal(segundoValor.getText()));
+				resultado.setText(controller.calcular(command).toString());
 			}
 		});
 
